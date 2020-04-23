@@ -1,5 +1,9 @@
 package q002;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Q002 並べ替える
  *
@@ -45,5 +49,24 @@ public class Q002 {
             "14,林",
             "9,清水"
     };
+
+    public static void main(String[] args){
+        Map<Integer, String> dataMap = new HashMap<>();
+
+        //dataListからIDを取得し、Indexとして扱う
+        for(String data: dataList){
+            String[] dataSplit = data.split(",");
+            dataMap.put(Integer.parseInt(dataSplit[0]), data);
+        }
+
+        //Key(Index)でソート
+        Object[] mapKey = dataMap.keySet().toArray();
+        Arrays.sort(mapKey);
+
+        //出力
+        for(int index: dataMap.keySet()){
+            System.out.println(dataMap.get(index));
+        }
+    }
 }
-// 完成までの時間: xx時間 xx分
+// 完成までの時間: 00時間 11分

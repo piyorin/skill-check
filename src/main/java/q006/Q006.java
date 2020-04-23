@@ -1,11 +1,12 @@
 package q006;
 
-import q006.value.DecimalValue;
-import q006.value.IValue;
-import q006.value.PlusValue;
+import q006.value.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Q006 空気を読んで改修
@@ -29,6 +30,20 @@ import java.util.List;
  * （または -1.00 など、小数点に0がついてもよい）
  */
 public class Q006 {
+    public static void main(String[] args){
+        String testData = "4 2 * 6 / 3 - 5 +";
+        System.out.println(String.format("入力）%s", testData));
+
+        List<IValue> result = parseLine(testData);
+
+        Stack<BigDecimal> stack = new Stack<BigDecimal>();
+        for (IValue iValue : result) {
+            iValue.execute(stack);
+        }
+
+        System.out.println(String.format("出力）%s", String.valueOf(stack.pop())));
+    }
+
     /**
      * 逆ポーランドで記載された1行のテキストを分解する
      * @param lineText 1行テキスト
@@ -38,10 +53,18 @@ public class Q006 {
         List<IValue> resultList = new ArrayList<>();
         // 空白文字で区切ってループする
         for (String text: lineText.split("[\\s]+")) {
-            // TODO 一部処理だけ実装
             switch (text) {
                 case "+":   // 足し算
                     resultList.add(new PlusValue());
+                    break;
+                case "-":   // 引き算
+                    resultList.add(new MinusValue());
+                    break;
+                case "*":   // 掛け算
+                    resultList.add(new MultiValue());
+                    break;
+                case "/":   // 割り算
+                    resultList.add(new DivisorValue(2, RoundingMode.HALF_UP));
                     break;
                 default:    // その他は数値として扱う
                     resultList.add(new DecimalValue(text));
@@ -51,4 +74,4 @@ public class Q006 {
         return resultList;
     }
 }
-// 完成までの時間: xx時間 xx分
+// 完成までの時間: 00時間 32分
